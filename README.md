@@ -1,4 +1,50 @@
 # libvirt-inventory.py
+
+## Tags
+
+It is possible to group libvirt domains dynamically, based on tags specified in the domain's description field.
+Script will search for `tags: {}` block (space after colon is not required) and will parse comma delimited list of key-value pairs.
+In each pair key must be separated from the value using colon or equal sign.
+
+E.g. having following domains:
+
+```bash
+❯ virsh list
+ Id   Name         State
+----------------------------
+ 1    rocky-0   running
+ 2    rocky-1   running
+ 3    rocky-2   running
+```
+
+with tags specified as:
+
+- `tags: {environment = demo, application = webserver}` for rocky-0 and
+- `tags: {environment = demo, application = database}` for rocky-1 and rocky-2
+
+will result in inventory graph:
+
+```text
+@all:
+  |--@database:
+  |  |--rocky-0
+  |--@demo:
+  |  |--rocky-0
+  |  |--rocky-1
+  |  |--rocky-2
+  |--@libvirt_guests:
+  |  |--rocky-0
+  |  |--rocky-1
+  |  |--rocky-2
+  |--@ungrouped:
+  |--@webserver:
+  |  |--rocky-1
+  |  |--rocky-2
+```
+
+Cosmetic changes include [black formatting](https://pypi.org/project/black/) and f-strings in place of `.format()`.
+
+## Original README
 ---
 A simple, self-contained inventory script (rather than plugin, which might be preferrable) to provide Ansible connectivity to libvirt domains based on their name, including globbing support. If the instances are riding a libvirt-managed network, with DHCP, and with a routable address from the place that you're running the inventory, then this will help you dynamically list and group hosts, as well as apply variables to those hosts or groups - defined before the hosts may even exist, and even on other hosts.
 
