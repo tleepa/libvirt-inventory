@@ -345,7 +345,7 @@ if __name__ == "__main__":
 
             tags = get_tags_from_description(vm)
             if tags:
-                for group in tags.values():
+                for group in [f"{k}_{v}" for k, v in tags.items()]:
                     if not group in inventory.keys():
                         logger.debug(f"Adding group {group}")
                         inventory[group] = {

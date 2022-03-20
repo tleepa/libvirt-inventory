@@ -26,9 +26,12 @@ will result in inventory graph:
 
 ```text
 @all:
-  |--@database:
+  |--@application_database:
   |  |--rocky-0
-  |--@demo:
+  |--@application_webserver:
+  |  |--rocky-1
+  |  |--rocky-2
+  |--@environment_demo:
   |  |--rocky-0
   |  |--rocky-1
   |  |--rocky-2
@@ -37,9 +40,6 @@ will result in inventory graph:
   |  |--rocky-1
   |  |--rocky-2
   |--@ungrouped:
-  |--@webserver:
-  |  |--rocky-1
-  |  |--rocky-2
 ```
 
 Cosmetic changes include [black formatting](https://pypi.org/project/black/) and f-strings in place of `.format()`.
